@@ -1,28 +1,23 @@
-window.addEventListener('DOMContentLoaded', async () => {
-
-    const url = 'http://localhost:8000/api/states/';
-
+window.addEventListener("DOMContentLoaded", async() => {
+    const url = "http://localhost:8000/api/locations/";
     const response = await fetch(url);
 
     if (response.ok) {
         const data = await response.json();
-
-        const selectTag = document.getElementById("state");
-
-        for (let state of data.states) {
+        const selectTag = document.getElementById("location");
+        for (let location of data.locations) {
             const option = document.createElement("option");
-            option.value = state.abbreviation;
-            option.innerHTML = state.name;
+            option.value = location.id;
+            option.innerHTML = location.name;
             selectTag.appendChild(option);
         }
-
-        const formTag = document.getElementById("create-location-form");
+        const formTag = document.getElementById("create-conference-form");
         formTag.addEventListener("submit", async event => {
             event.preventDefault();
             const formData = new FormData(formTag);
             const json = JSON.stringify(Object.fromEntries(formData));
-
-            const locationUrl = 'http://localhost:8000/api/locations/';
+            console.log("json", json)
+            const conferenceUrl = "http://localhost:8000/api/conferences/"
             const fetchConfig = {
                 method: "POST",
                 body: json,
@@ -31,17 +26,15 @@ window.addEventListener('DOMContentLoaded', async () => {
                 },
             };
 
-            const response = await fetch(locationUrl, fetchConfig);
+            const response = await fetch(conferenceUrl, fetchConfig);
             if (response.ok) {
                 formTag.reset();
-                const newLocation = await response.json();
-
+                const newConference = await response.json();
+                console.log("newConference", newConference);
             }
+
         });
-
-
     } else {
-        console.error("It's broken!", error)
+        console.error("It's broken: ", error)
     }
-
-});
+})
