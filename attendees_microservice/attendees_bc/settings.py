@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "corsheaders",
     "django_crontab",
     "attendees.apps.AttendeesConfig",
     "django.contrib.admin",
@@ -51,7 +52,10 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
 ]
+
+CORS_ALLOWED_ORIGINS = [ "http://localhost:3001", "http://localhost:3000"]
 
 CRONJOBS = [
     ("* * * * *", "attendees.poll.get_conferences"),
